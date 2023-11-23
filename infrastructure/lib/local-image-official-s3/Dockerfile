@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: MIT-0
-# FROM osimis/orthanc:23.8.2 as build
 FROM osimis/orthanc:23.8.2 as build
+# FROM osimis/orthanc:21.11.0 as build
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -31,8 +31,8 @@ RUN apt-get install -y libjsoncpp-dev uuid-dev e2fsprogs libboost-all-dev
 RUN cmake -DCMAKE_POLICY_DEFAULT_CMP0057=NEW -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DUSE_SYSTEM_GOOGLE_TEST=OFF ../orthanc-object-storage/Aws
 RUN CORES=`grep -c ^processor /proc/cpuinfo` && make -j$CORES
 
-# FROM osimis/orthanc:23.8.2 as release
-FROM osimis/orthanc:21.11.0 as release
+FROM osimis/orthanc:23.8.2 as release
+# FROM osimis/orthanc:21.11.0 as release
 
 # Get compiled S3 plugin binary from build stage
 COPY --from=build /tmp/build/libOrthancAwsS3Storage.so /usr/share/orthanc/plugins/
